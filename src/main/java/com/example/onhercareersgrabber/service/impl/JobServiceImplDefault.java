@@ -5,6 +5,7 @@ import com.example.onhercareersgrabber.model.JobsDTO;
 import com.example.onhercareersgrabber.repository.JobRepository;
 import com.example.onhercareersgrabber.service.JobService;
 import com.example.onhercareersgrabber.util.OnHerMapper;
+import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -14,9 +15,11 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.Objects;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Slf4j
+@Transactional
 public class JobServiceImplDefault implements JobService {
 
     private static final String URL_FOR_GRAB = "https://www.onlineheroes.com/careers/";
@@ -42,7 +45,10 @@ public class JobServiceImplDefault implements JobService {
         processDataAndPersist(articles);
         }
 
-
+    @Override
+    public List<JobsDO> getAllJobsFromDtbs() {
+        return repository.findAll();
+    }
 
     private void processDataAndPersist(Elements articles) {
         JobsDTO jobsDTO;
